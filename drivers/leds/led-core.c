@@ -1,3 +1,15 @@
+/**
+  ******************************************************************************
+  * @file    led.h
+  * @author  alex_wang
+  * @version V1.0.0
+  * @date    02-07-2017
+  * @brief   This file contains all the functions prototypes for the LED 
+  ******************************************************************************
+  * @attention
+  *
+  ******************************************************************************
+  */
 #include "led.h"
 
 int led_init(void){
@@ -16,19 +28,14 @@ int led_init(void){
 }
 extern int led_init(void);
 
- static void Delay(u32 count)
- {
-   u32 i=0;
-   for(;i<count;i++);
- }
- 
+
 void led_work(void)
 {
 	gpio_red_enable();
 	gpio_green_disable();
-	Delay(10000000);
+	systick_ms(300);
 	gpio_red_disable();
 	gpio_green_enable();
-	Delay(10000000);
+	systick_ms(300);
 }
 extern void led_work(void);

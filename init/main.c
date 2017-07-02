@@ -1,7 +1,8 @@
 #include "stm32f10x.h"
 int main(void)
 {
-  led_init();
+	systick_init();
+    led_init();
 while(1){
 	  led_work();
 }

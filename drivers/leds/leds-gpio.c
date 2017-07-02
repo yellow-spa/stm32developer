@@ -1,3 +1,15 @@
+/**
+  ******************************************************************************
+  * @file    led.h
+  * @author  alex_wang
+  * @version V1.0.0
+  * @date    02-07-2017
+  * @brief   This file contains all the functions prototypes for the LED 
+  ******************************************************************************
+  * @attention
+  *
+  ******************************************************************************
+  */
 #include "led.h"
 #include "stm32f10x_conf.h"
 
@@ -15,7 +27,6 @@ struct gpio_led_data{
 };
 
 struct gpio_led_data *gpio_led_info;
-
  int gpio_led_probe(void){
    struct gpio_led_data *gpio_led;
    gpio_led=(struct gpio_led_data*)malloc(sizeof(struct gpio_led_data));

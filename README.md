@@ -9,6 +9,8 @@
 ## 相关小实验
 
 ### LED
-跑马灯设计，在led-core.c中还可以加入不同的算法
+跑马灯设计，在led-core.c中还可以加入不同的算法，所有的接口函数都在led-gpio.c中
 
 
+### systick
+systick设计能够让时间更加的精准。接口函数在systick.c中
