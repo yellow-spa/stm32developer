@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    led.h
+  * @file    led-core.c
   * @author  alex_wang
   * @version V1.0.0
   * @date    02-07-2017
-  * @brief   This file contains all the functions prototypes for the LED 
+  * @brief   This file contains all the algo of LED 
   ******************************************************************************
   * @attention
   *
@@ -16,7 +16,7 @@ int led_init(void){
 	int ret=0;
 	ret = gpio_led_probe();
 	if(ret){
-	   goto led_error;
+	   goto led_probe_error;
 	}
 	ret=gpio_led_init();
 	if(ret){
@@ -24,10 +24,11 @@ int led_init(void){
 	}
 	return 0;
 	led_error:
+	gpio_led_remove();
+	led_probe_error:
+	gpio_led_removemem();
 	return -1;
 }
-extern int led_init(void);
-
 
 void led_work(void)
 {
@@ -38,4 +39,4 @@ void led_work(void)
 	gpio_green_enable();
 	systick_ms(300);
 }
-extern void led_work(void);
+

@@ -1,3 +1,4 @@
+
 /**
   ******************************************************************************
   * @file    led.h
@@ -10,10 +11,12 @@
   *
   ******************************************************************************
   */
-#ifndef LED_H
-#define LED_H
-#include "stm32f10x_conf.h"
-int led_init(void);
-void led_work(void);
-
+#ifndef USART_H
+#define USART_H
+typedef enum
+{ 
+  USART_RCC_APB1 = 1,
+  USART_RCC_APB2
+}USARTRCC_TypeDef;
+int usart_work_init(void);
 #endif
