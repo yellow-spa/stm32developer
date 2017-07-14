@@ -15,6 +15,7 @@
 #include "stdio.h"
 int usart_work_init(void){
 	int ret=0;
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
 	ret = usart_probe();
 	if(ret){
 	   goto usart_probe_error;
@@ -76,7 +77,7 @@ void uart2_send_data(u8* buf,int len)
   u8 Res;
   if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) 
   {
-   Res =USART_ReceiveData(USART2);
+      Res =USART_ReceiveData(USART2);
         
   } 
  }

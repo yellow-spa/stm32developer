@@ -77,7 +77,7 @@ int usart_probe(void)
      struct usart_data *usart;
 	 usart = (  struct usart_data * )malloc(sizeof(struct usart_data));
 	if(!usart){
-		printf("[%s]usart malloc error\n");
+		printf("[%s]usart malloc error\n",__func__);
 		return -1;
 	}
 	 usart->RCCAPB=USART_RCC_APB1;
@@ -90,7 +90,7 @@ int usart_probe(void)
 	usart->NVISubPriority=3;
 	usart->gpio_bus=GPIOA;
 	usart->usartnum=USART2;
-	usart->bound=115200;
+	usart->bound=38400;
 	usart->mode=USART_Mode_Rx | USART_Mode_Tx;
 	usart_info=usart;
 	return 0;
@@ -108,18 +108,6 @@ int usart_init(void)
 {
 	int ret=0;
 	struct usart_data *usart=usart_info;
-	 GPIO_InitTypeDef GPIO_InitStructure;
-	/*
-		//USART2_TX   GPIOA.2
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2; 
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
-  //USART2_RX	  GPIOA.3
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;//PA3
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);*/
-	
 	//register gpio tx
 	gpio_register_output(usart->GPIO_Periph,usart->gpio_bus,usart->txGPIOpin,GPIO_Speed_50MHz,GPIO_Mode_AF_PP);
 	//register gpio rx

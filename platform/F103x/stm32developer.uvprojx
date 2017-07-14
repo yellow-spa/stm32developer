@@ -588,6 +588,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\drivers\usart\usart-gpio.c</FilePath>
             </File>
+            <File>
+              <FileName>usart-core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\drivers\usart\usart-core.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
