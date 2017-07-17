@@ -31,6 +31,7 @@ struct usart_data *usart_info;
 int usart_setting( int RCCAPB,uint32_t USART_Periph, USART_TypeDef * usart,uint32_t bound,uint16_t wordlength,uint16_t stopbitnum,uint16_t parity,uint16_t flowcontrol,uint16_t mode)
 {
 	  USART_InitTypeDef USART_InitStructure;
+	  USART_StructInit(&USART_InitStructure);//init structure
       if(RCCAPB == 1){
 		  RCC_APB1PeriphClockCmd(USART_Periph, ENABLE);
 	  }else if(RCCAPB == 2){
@@ -80,17 +81,17 @@ int usart_probe(void)
 		printf("[%s]usart malloc error\n",__func__);
 		return -1;
 	}
-	 usart->RCCAPB=USART_RCC_APB1;
-	  usart->USART_Periph=RCC_APB1Periph_USART2;
+	usart->RCCAPB=USART_RCC_APB2;
+	usart->USART_Periph=RCC_APB2Periph_USART1;
 	usart->GPIO_Periph=RCC_APB2Periph_GPIOA;
-	usart->txGPIOpin=GPIO_Pin_2;
-	usart->rxGPIOpin=GPIO_Pin_3;
-	usart->irqchannel=USART2_IRQn;
+	usart->txGPIOpin=GPIO_Pin_9;
+	usart->rxGPIOpin=GPIO_Pin_10;
+	usart->irqchannel=USART1_IRQn;
 	usart->NVIPrePriority=3;
 	usart->NVISubPriority=3;
 	usart->gpio_bus=GPIOA;
-	usart->usartnum=USART2;
-	usart->bound=38400;
+	usart->usartnum=USART1;
+	usart->bound=115200;
 	usart->mode=USART_Mode_Rx | USART_Mode_Tx;
 	usart_info=usart;
 	return 0;
