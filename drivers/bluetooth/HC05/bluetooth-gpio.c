@@ -87,3 +87,25 @@ void bluetooth_uart_remove(void)
 	GPIO_DeInit(bluetooth->gpio_bus);
 }
 extern void usart_remove(void);
+
+void bluetooth_data_set(int RCCAPB,uint32_t USART_Periph,uint16_t txGPIOpin,uint16_t rxGPIOpin,uint8_t irqchannel ,uint8_t NVIPrePriority, uint8_t NVISubPriority,USART_TypeDef* usartnum,u32 bound )
+{
+	struct bluetooth_data *bluetooth=bluetooth_info;
+	bluetooth->RCCAPB=RCCAPB;
+	bluetooth->USART_Periph=USART_Periph;
+	bluetooth->txGPIOpin=txGPIOpin;
+	bluetooth->rxGPIOpin=rxGPIOpin;
+	bluetooth->irqchannel=irqchannel;
+	bluetooth->NVIPrePriority=NVIPrePriority;
+	bluetooth->NVISubPriority=NVISubPriority;
+	bluetooth->usartnum=usartnum;
+	bluetooth->bound=bound;
+}
+extern void bluetooth_data_set(int RCCAPB,uint32_t USART_Periph,uint16_t txGPIOpin,uint16_t rxGPIOpin,uint8_t irqchannel,uint8_t NVIPrePriority, uint8_t NVISubPriority,USART_TypeDef* usartnum,u32 bound );
+
+void bluetooth_data_boundset(u32 bound)
+{
+	struct bluetooth_data *bluetooth=bluetooth_info;
+	bluetooth->bound=bound;
+}
+extern void bluetooth_data_boundset(u32 bound);
