@@ -1,4 +1,4 @@
-# 中文版
+ # 中文版
 
 ## 关于本项目
 
@@ -14,3 +14,9 @@
 
 ### systick
 systick设计能够让时间更加的精准。接口函数在systick.c中
+
+### uart
+uart gpio在txGPIO 为PA9 rxGPIO 为PA10 作为UART口 UART2优化变成环形数据结构
+
+### bluetooth
+bluetooth 为串口透传，现在所使用的为txGPIO 为PA2 rxGPIO 为PA3作为串口输出

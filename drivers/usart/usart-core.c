@@ -25,6 +25,7 @@ int usart_work_init(void){
 	if(ret){
 	   goto usart_error;
 	}
+	printf("usart OK");
 	return 0;
 	usart_error:
 	usart_remove();
@@ -103,60 +104,62 @@ u16 USART_RX_STA=0;       //接收状态标记
 
 
 #if EN_USART2_RX 
-u8 UART2_RX_BUF[USART_REC_LEN];     //接收缓冲,最大USART_REC_LEN个字节.
-u16 UART2_RX_STA=0;
+ 
+Uart2Buf Uart2Txbuf;
+Uart2Buf Uart2Rxbuf;
+ unsigned char rx_buf[RX_BUFFER_SIZE];
+ unsigned char tx_buf[TX_BUFFER_SIZE];
+//读取环形数据中的一个字节
+uint8_t Uart2Buf_RD(Uart2Buf *buf)
+{
+  uint8_t temp;
+  temp = buf->pbuf[buf->Rd_Indx & buf->Mask];
+  buf->Rd_Indx++;
+  return temp;
+}
+
+void Uart2Buf_WD(Uart2Buf *Ringbuf,uint8_t DataIn)
+{
+  
+  Ringbuf->pbuf[Ringbuf->Wd_Indx & Ringbuf->Mask] = DataIn;
+  Ringbuf->Wd_Indx++;
+
+}
+
+//环形数据区的可用字节长度，当写指针写完一圈，追上读指针
+//那么数据写满了，此时应该增加缓冲区长度，或者缩短外围数据处理时间
+uint16_t Uart2Buf_Cnt(Uart2Buf *Ringbuf)
+{
+  return (Ringbuf->Wd_Indx - Ringbuf->Rd_Indx) & Ringbuf->Mask;
+}
+
+
+volatile uint8_t Udatatmp;
+
 void USART2_IRQHandler(void)                 
 {
- u8 Res;
- if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) 
+ if(USART_GetITStatus(USART2, USART_IT_TXE) != RESET) 
  {
-    Res =USART_ReceiveData(USART2);
-     if((UART2_RX_STA&0x8000)==0)//接收未完成
-			 {
-			     if(UART2_RX_STA&0x4000)//接收到了0x0d
-				   {
-				       if(Res!=0x0a)UART2_RX_STA=0;//接收错误,重新开始
-			        	else UART2_RX_STA|=0x8000;	//接收完成了 
-				   }
-			     else //还没收到0X0D
-		     	{	
-				      if(Res==0x0d)UART2_RX_STA|=0x4000;
-				      else
-					    {
-					      UART2_RX_BUF[UART2_RX_STA&0X3FFF]=Res ;
-					       UART2_RX_STA++;
-					        if(UART2_RX_STA>(USART_REC_LEN-1))UART2_RX_STA=0;//接收数据错误,重新开始接收	  
-					    }		 
-			    }
-			}
- } 
+	// printf("send\n");
+	 USART_SendData(USART2, Uart2Buf_RD(&Uart2Txbuf)); 
+	 if(Uart2Buf_Cnt(&Uart2Txbuf) == 0)
+		  USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
+ }
+ else if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
+ {
+	   USART_ClearITPendingBit(USART2, USART_IT_RXNE);//reset flag
+	   Udatatmp = (uint8_t)USART_ReceiveData(USART2); 
+	    Uart2Buf_WD(&Uart2Rxbuf,Udatatmp);
+ }
+}
+//uart2 function
+void UART2_Put_Char(unsigned char DataToSend)
+{
+  
+  Uart2Buf_WD(&Uart2Txbuf,DataToSend);
+  USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
 }
 
- void uart2_send_data(u8* buf,u16 len)
-{
-	u16 i;
-	for(i=0;i<len;i++){
-		 USART_SendData(USART2,*(buf++));
-		 while(USART_GetFlagStatus(USART2,USART_FLAG_TC)!=SET);
-	}
-	UART2_RX_STA=0;
-}
- void uart1_send_data(u8* buf,u16 len)
-{
-	u16 i;
-	for(i=0;i<len;i++){
-		 USART_SendData(USART1,*(buf++));
-		 while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);
-	}
-	UART2_RX_STA=0;
-}
-void usart2_receive_test(void)
-{
-	
-	printf("发送的信息 \n");
-
-	uart2_send_data(UART2_RX_BUF,UART2_RX_STA&0X3FFF);
-}
 #endif
 //uart2 work-----
 

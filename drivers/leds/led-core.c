@@ -22,6 +22,7 @@ int led_init(void){
 	if(ret){
 	   goto led_error;
 	}
+	printf("led probe OK\n");
 	return 0;
 	led_error:
 	gpio_led_remove();

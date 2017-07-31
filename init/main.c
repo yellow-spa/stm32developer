@@ -12,8 +12,8 @@ int main(void)
 	usart_enable(USART2);
     led_init();
 while(1){
-	usart2_receive_test();
 	  led_work();
+	systick_ms(300);
 }
   return 0;
 }

@@ -11,25 +11,12 @@
   *
   ******************************************************************************
   */
-
+#ifndef BLUETOOTH_H
+#define BLUETOOTH_H
 #define CmdreturnLength 20
-	
-const char ATcmdAsk[]    =		 {"AT"};
-const char ATcmdAnswer[] =     {"OK"};
 
-const char ATcmdNameAsk[] = 	 {"AT+NAME?"};
-const char ATcmdNameAnswer[] =  {"OK+NAME:athena"};	
-const char ATcmdNameSet[] = 	 {"AT+NAMEathena"};    
-
-const char ATcmdCodeAsk[] = 	 {"AT+PIN?"};
-const char ATcmdCodeAnswer[] = {"OK+PIN:1234"};	
-const char ATcmdCodeSet[] =		 {"AT+PIN1234"};         
-
-const char ATcmdRenewAsk[] = 	 {"AT+RENEW"};	//reset config
-const char ATcmdRenewAnswer[] = {"OK+RENEW"};	
-
-const char ATcmdBaudAsk[] =		 {"AT+BAUD?"};
-const char ATcmdBaudAnswer[] = {"OK+BAUD:115200"};
 
 	
 int bluetooth_work_init(void);
+
+#endif
