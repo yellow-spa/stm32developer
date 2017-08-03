@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\FWLib\inc;..\..\Libraries\Core;..\..\include;..\..\Libraries</IncludePath>
+              <IncludePath>..\..\Libraries\FWLib\inc;..\..\Libraries\Core;..\..\include;..\..\Libraries;..\..\hardware\include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -438,6 +438,26 @@
               <FileType>5</FileType>
               <FilePath>..\..\include\usart.h</FilePath>
             </File>
+            <File>
+              <FileName>timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\include\timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>pwm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\include\pwm.h</FilePath>
+            </File>
+            <File>
+              <FileName>data_transfer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\data_transfer.h</FilePath>
+            </File>
+            <File>
+              <FileName>tftlcd.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\include\tftlcd.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -487,6 +507,26 @@
               <FileName>bluetooth-gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\drivers\bluetooth\HC05\bluetooth-gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\drivers\pwm\pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer-core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\drivers\timer\timer-core.c</FilePath>
+            </File>
+            <File>
+              <FileName>tftlcd-config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\drivers\LCD\TFT\tftlcd-config.c</FilePath>
+            </File>
+            <File>
+              <FileName>tftlcd-core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\drivers\LCD\TFT\tftlcd-core.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -627,6 +667,21 @@
               <FileName>system_stm32f10x.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Libraries\system_stm32f10x.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>hardware</GroupName>
+          <Files>
+            <File>
+              <FileName>pwm-led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\hardware\pwm-led.c</FilePath>
+            </File>
+            <File>
+              <FileName>data_transfer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\hardware\data_transfer.c</FilePath>
             </File>
           </Files>
         </Group>
