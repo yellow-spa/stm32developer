@@ -57,6 +57,7 @@ uint8_t Uart2Buf_RD(Uart2Buf *buf);
 void Uart2Buf_WD(Uart2Buf *Ringbuf,uint8_t DataIn);
 uint16_t Uart2Buf_Cnt(Uart2Buf *Ringbuf);
 void UART2_Put_Char(unsigned char DataToSend);
+void Uart2SendBuffer(uint8_t *dat, uint8_t len);
 #endif
 
 #endif

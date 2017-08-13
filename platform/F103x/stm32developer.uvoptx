@@ -337,8 +337,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\hardware\include\data_transfer.h</PathWithFileName>
-      <FilenameWithoutPath>data_transfer.h</FilenameWithoutPath>
+      <PathWithFileName>..\..\include\tftlcd.h</PathWithFileName>
+      <FilenameWithoutPath>tftlcd.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -350,8 +350,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\include\tftlcd.h</PathWithFileName>
-      <FilenameWithoutPath>tftlcd.h</FilenameWithoutPath>
+      <PathWithFileName>..\..\hardware\include\ATKPackage.h</PathWithFileName>
+      <FilenameWithoutPath>ATKPackage.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -920,8 +920,21 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\hardware\data_transfer.c</PathWithFileName>
-      <FilenameWithoutPath>data_transfer.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\hardware\ATKPackage.c</PathWithFileName>
+      <FilenameWithoutPath>ATKPackage.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>5</GroupNumber>
+      <FileNumber>52</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\hardware\tftlcd_hardware.c</PathWithFileName>
+      <FilenameWithoutPath>tftlcd_hardware.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

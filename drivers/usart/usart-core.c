@@ -13,7 +13,8 @@
 #include "usart.h"
 #include "stm32f10x_conf.h"
 #include "stdio.h"
-
+#include "ATKPackage.h"
+#include "hardwareconfig.h"
 int usart_work_init(void){
 	int ret=0;
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
@@ -149,7 +150,10 @@ void USART2_IRQHandler(void)
  {
 	   USART_ClearITPendingBit(USART2, USART_IT_RXNE);//reset flag
 	   Udatatmp = (uint8_t)USART_ReceiveData(USART2); 
-	    Uart2Buf_WD(&Uart2Rxbuf,Udatatmp);
+#ifdef UART_ATK_SUPPORT
+	   ATKPackage_Data_Receive_Prepare(Udatatmp);
+#endif	 
+	   Uart2Buf_WD(&Uart2Rxbuf,Udatatmp);
  }
 }
 //uart2 function
@@ -158,6 +162,18 @@ void UART2_Put_Char(unsigned char DataToSend)
   
   Uart2Buf_WD(&Uart2Txbuf,DataToSend);
   USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
+}
+
+void Uart2SendBuffer(uint8_t *dat, uint8_t len)
+{
+	uint8_t i;
+	
+	for(i=0;i<len;i++)
+	{
+		Uart2Buf_WD(&Uart2Txbuf,*dat);
+		dat++;
+	}
+	USART_ITConfig(USART2, USART_IT_TXE, ENABLE); 
 }
 
 #endif

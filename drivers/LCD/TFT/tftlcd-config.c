@@ -3,9 +3,6 @@
 #include "font.h" 
 #include "usart.h"	    
 //////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//ALIENTEK 战舰STM32F103开发板V3
-//2.4寸/2.8寸/3.5寸/4.3寸/7寸 TFT液晶驱动	  
 //支持驱动IC型号包括:ILI9341/ILI9325/RM68042/RM68021/ILI9320/ILI9328/LGDP4531/LGDP4535/
 //                  SPFD5408/1505/B505/C505/NT35310/NT35510/SSD1963等		    
 //正点原子@ALIENTEK
@@ -13,7 +10,7 @@
 //创建日期:2010/7/4
 //版本：V2.9
 //版权所有，盗版必究。
-//Copyright(C) 广州市星翼电子科技有限公司 2014-2024
+//Copyright(C)
 //All rights reserved	
 //********************************************************************************
 //V1.2修改说明
@@ -593,39 +590,13 @@ void LCD_Set_Window(u16 sx,u16 sy,u16 width,u16 height)
 //该初始化函数可以初始化各种ILI93XX液晶,但是其他函数是基于ILI9320的!!!
 //在其他型号的驱动芯片上没有测试! 
 void LCD_Init(void)
-{ 					
- 	GPIO_InitTypeDef GPIO_InitStructure;
+{
 	FSMC_NORSRAMInitTypeDef  FSMC_NORSRAMInitStructure;
   FSMC_NORSRAMTimingInitTypeDef  readWriteTiming; 
 	FSMC_NORSRAMTimingInitTypeDef  writeTiming;
 	
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC,ENABLE);	//使能FSMC时钟
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOD|RCC_APB2Periph_GPIOE|RCC_APB2Periph_GPIOG,ENABLE);//使能PORTB,D,E,G以及AFIO复用功能时钟
-
- 
- 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;				 //PB0 推挽输出 背光
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
- 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOB, &GPIO_InitStructure);
-	
- 	//PORTD复用推挽输出  
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_14|GPIO_Pin_15;				 //	//PORTD复用推挽输出  
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP; 		 //复用推挽输出   
- 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOD, &GPIO_InitStructure); 
-  	 
-	//PORTE复用推挽输出  
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;				 //	//PORTD复用推挽输出  
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP; 		 //复用推挽输出   
- 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOE, &GPIO_InitStructure);    	    	 											 
-
-   	//	//PORTG12复用推挽输出 A0	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_12;	 //	//PORTD复用推挽输出  
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP; 		 //复用推挽输出   
- 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOG, &GPIO_InitStructure); 
-
+  TFTLCD_GPIO_config();
 	readWriteTiming.FSMC_AddressSetupTime = 0x01;	 //地址建立时间（ADDSET）为2个HCLK 1/36M=27ns
   readWriteTiming.FSMC_AddressHoldTime = 0x00;	 //地址保持时间（ADDHLD）模式A未用到	
   readWriteTiming.FSMC_DataSetupTime = 0x0f;		 // 数据保存时间为16个HCLK,因为液晶驱动IC的读数据的时候，速度不能太快，尤其对1289这个IC。

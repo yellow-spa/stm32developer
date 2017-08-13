@@ -3,9 +3,6 @@
 #include "gpio.h"	 
 #include "stdlib.h"
 //////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//ALIENTEK精英STM32F103开发板V1
-//2.4寸/2.8寸/3.5寸/4.3寸/7寸 TFT液晶驱动	  
 //支持驱动IC型号包括:ILI9341/ILI9325/RM68042/RM68021/ILI9320/ILI9328/LGDP4531/LGDP4535/
 //                  SPFD5408/1505/B505/C505/NT35310/NT35510/SSD1963等		    
 //正点原子@ALIENTEK
@@ -152,7 +149,7 @@ typedef struct
 
 #define LGRAYBLUE        0XA651 //浅灰蓝色(中间层颜色)
 #define LBBLUE           0X2B12 //浅棕蓝色(选择条目的反色)
-	    															  
+void TFTLCD_GPIO_config(void);	    															  
 void LCD_Init(void);													   	//初始化
 void LCD_DisplayOn(void);													//开显示
 void LCD_DisplayOff(void);													//关显示

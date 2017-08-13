@@ -16,3 +16,15 @@ void TIM3_PWM_Init(u16 arr,u16 psc)
   PWM_Init(TIM3,2,TIM_OCMode_PWM2,TIM_OutputState_Enable,TIM_OCPolarity_High);	
   Timer_enable(TIM3,1);  //Ê¹ÄÜTIM3
 }
+
+void pwm_led_work(void)
+{
+	u16 led0pwmval=0;
+ 	u8 dir=1;
+	systick_ms(10);	 
+ 	if(dir)led0pwmval++;
+ 	else led0pwmval--;
+	if(led0pwmval>300)dir=0;
+	if(led0pwmval==0)dir=1;										 
+	TIM_SetCompare2(TIM3,led0pwmval);
+}

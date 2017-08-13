@@ -449,14 +449,14 @@
               <FilePath>..\..\include\pwm.h</FilePath>
             </File>
             <File>
-              <FileName>data_transfer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\hardware\include\data_transfer.h</FilePath>
-            </File>
-            <File>
               <FileName>tftlcd.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\include\tftlcd.h</FilePath>
+            </File>
+            <File>
+              <FileName>ATKPackage.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\ATKPackage.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -679,9 +679,14 @@
               <FilePath>..\..\hardware\pwm-led.c</FilePath>
             </File>
             <File>
-              <FileName>data_transfer.c</FileName>
+              <FileName>ATKPackage.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\hardware\data_transfer.c</FilePath>
+              <FilePath>..\..\hardware\ATKPackage.c</FilePath>
+            </File>
+            <File>
+              <FileName>tftlcd_hardware.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\hardware\tftlcd_hardware.c</FilePath>
             </File>
           </Files>
         </Group>
