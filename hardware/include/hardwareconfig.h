@@ -1,1 +1,1 @@
-#define UART_ATK_SUPPORT 
+#define UART_ATK_SUPPORT 1

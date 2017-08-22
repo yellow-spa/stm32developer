@@ -279,13 +279,15 @@ void HMC5883L_SetMode(uint8_t newMode)
 void HMC5883L_GetHeading(s16* Mag)
 {
     uint8_t tmpbuff[6] = { 0 };
+		int i;
+		uint8_t tmp;
     HMC5883L_I2C_BufferRead(HMC5883L_DEFAULT_ADDRESS, tmpbuff, HMC5883L_RA_DATAX_H, 6);
 
-    uint8_t tmp = HMC5883L_MODE_SINGLE << (HMC5883L_MODEREG_BIT - HMC5883L_MODEREG_LENGTH + 1);
+    tmp = HMC5883L_MODE_SINGLE << (HMC5883L_MODEREG_BIT - HMC5883L_MODEREG_LENGTH + 1);
 
     if (HMC5883Lmode == HMC5883L_MODE_SINGLE)
         HMC5883L_I2C_ByteWrite(HMC5883L_DEFAULT_ADDRESS, &tmp, HMC5883L_RA_MODE);
-    for (int i = 0; i < 3; i++)
+    for (i = 0; i < 3; i++)
         Mag[i] = ((s16) ((u16) tmpbuff[2 * i] << 8) + tmpbuff[2 * i + 1]);
 }
 
@@ -336,8 +338,9 @@ bool HMC5883L_GetReadyStatus()
 void HMC5883L_WriteBits(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitStart, uint8_t length, uint8_t data)
 {
     uint8_t tmp;
+	 uint8_t mask;
     HMC5883L_I2C_BufferRead(slaveAddr, &tmp, regAddr, 1);
-    uint8_t mask = ((1 << length) - 1) << (bitStart - length + 1);
+    mask = ((1 << length) - 1) << (bitStart - length + 1);
     data <<= (bitStart - length + 1); // shift data into correct position
     data &= mask; // zero all non-important bits in data
     tmp &= ~(mask); // zero all important bits in existing byte
@@ -370,8 +373,9 @@ void HMC5883L_WriteBit(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitNum, uint8
 void HMC5883L_ReadBits(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitStart, uint8_t length, uint8_t *data)
 {
     uint8_t tmp;
+	  uint8_t mask;
     HMC5883L_I2C_BufferRead(slaveAddr, &tmp, regAddr, 1);
-    uint8_t mask = ((1 << length) - 1) << (bitStart - length + 1);
+    mask = ((1 << length) - 1) << (bitStart - length + 1);
     tmp &= mask;
     tmp >>= (bitStart - length + 1);
     *data = tmp;

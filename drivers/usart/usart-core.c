@@ -26,7 +26,7 @@ int usart_work_init(void){
 	if(ret){
 	   goto usart_error;
 	}
-	printf("usart OK");
+	printf("usart OK\n");
 	return 0;
 	usart_error:
 	usart_remove();
@@ -141,7 +141,6 @@ void USART2_IRQHandler(void)
 {
  if(USART_GetITStatus(USART2, USART_IT_TXE) != RESET) 
  {
-	// printf("send\n");
 	 USART_SendData(USART2, Uart2Buf_RD(&Uart2Txbuf)); 
 	 if(Uart2Buf_Cnt(&Uart2Txbuf) == 0)
 		  USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
@@ -150,8 +149,9 @@ void USART2_IRQHandler(void)
  {
 	   USART_ClearITPendingBit(USART2, USART_IT_RXNE);//reset flag
 	   Udatatmp = (uint8_t)USART_ReceiveData(USART2); 
-#ifdef UART_ATK_SUPPORT
-	   ATKPackage_Data_Receive_Prepare(Udatatmp);
+	  // printf("%2x",Udatatmp);
+#if UART_ATK_SUPPORT
+	   ATKPackage_Receive_Prepare(Udatatmp);
 #endif	 
 	   Uart2Buf_WD(&Uart2Rxbuf,Udatatmp);
  }

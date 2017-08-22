@@ -6,6 +6,7 @@
 #include "tftlcd.h"
 #include "tftlcd_hardware.h"
 #include "ATKPackage.h"
+#include "sensors.h"
 int main(void)
 {	
 	systick_init();
@@ -13,15 +14,17 @@ int main(void)
 	usart_enable(USART1);
 	bluetooth_work_init();
 	usart_enable(USART2);
-  led_init();
-  TIM3_PWM_Init(899,0);
-	LCD_Init();
-	tftlcd_print_id();
+	sensors_init();
+// led_init();
+// TIM3_PWM_Init(899,0);
+//	LCD_Init();
+//	tftlcd_print_id();
 while(1)
 	{
-	    tftlcd_work();
-			systick_ms(5);	 
-		  ANO_DT_Data_Exchange();
+			systick_ms(10);	
+		  //ATKPackage_SendPeriod();
+			printf("test");
+		  sensors_test();
 	}
   return 0;
 }

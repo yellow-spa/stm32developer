@@ -53,7 +53,9 @@
 #ifdef __cplusplus
  extern "C" {
 #endif 
-  
+ 
+#define TRUE 1
+#define FALSE 0	 
 /** @addtogroup Library_configuration_section
   * @{
   */

@@ -218,13 +218,14 @@ void MPU6050_SetSleepModeStatus(FunctionalState NewState)
  */
 void MPU6050_GetRawAccelGyro(s16* AccelGyro)
 {
+	int i;
     u8 tmpBuffer[14];
     MPU6050_I2C_BufferRead(MPU6050_DEFAULT_ADDRESS, tmpBuffer, MPU6050_RA_ACCEL_XOUT_H, 14);
     /* Get acceleration */
-    for (int i = 0; i < 3; i++)
+    for (i = 0; i < 3; i++)
         AccelGyro[i] = ((s16) ((u16) tmpBuffer[2 * i] << 8) + tmpBuffer[2 * i + 1]);
     /* Get Angular rate */
-    for (int i = 4; i < 7; i++)
+    for ( i = 4; i < 7; i++)
         AccelGyro[i - 1] = ((s16) ((u16) tmpBuffer[2 * i] << 8) + tmpBuffer[2 * i + 1]);
 
 }
@@ -246,8 +247,9 @@ void MPU6050_WriteBits(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitStart, uin
     // 10100011 original & ~mask
     // 10101011 masked | value
     uint8_t tmp;
+	  uint8_t mask;
     MPU6050_I2C_BufferRead(slaveAddr, &tmp, regAddr, 1);
-    uint8_t mask = ((1 << length) - 1) << (bitStart - length + 1);
+    mask = ((1 << length) - 1) << (bitStart - length + 1);
     data <<= (bitStart - length + 1); // shift data into correct position
     data &= mask; // zero all non-important bits in data
     tmp &= ~(mask); // zero all important bits in existing byte
@@ -285,8 +287,9 @@ void MPU6050_ReadBits(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitStart, uint
     //    010   masked
     //   -> 010 shifted
     uint8_t tmp;
+	   uint8_t mask;
     MPU6050_I2C_BufferRead(slaveAddr, &tmp, regAddr, 1);
-    uint8_t mask = ((1 << length) - 1) << (bitStart - length + 1);
+   mask = ((1 << length) - 1) << (bitStart - length + 1);
     tmp &= mask;
     tmp >>= (bitStart - length + 1);
     *data = tmp;

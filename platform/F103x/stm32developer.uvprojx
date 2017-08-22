@@ -458,6 +458,16 @@
               <FileType>5</FileType>
               <FilePath>..\..\hardware\include\ATKPackage.h</FilePath>
             </File>
+            <File>
+              <FileName>HAL_MPU6050.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\include\HAL_MPU6050.h</FilePath>
+            </File>
+            <File>
+              <FileName>MPU6050.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\include\MPU6050.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -527,6 +537,11 @@
               <FileName>tftlcd-core.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\drivers\LCD\TFT\tftlcd-core.c</FilePath>
+            </File>
+            <File>
+              <FileName>MPU6050.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\drivers\sensors\MPU6050lib\MPU6050.c</FilePath>
             </File>
           </Files>
         </Group>

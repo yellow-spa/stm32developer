@@ -35,6 +35,7 @@ int bluetooth_work_init(void){
   Uart2Rxbuf.Mask = RX_BUFFER_SIZE - 1;
   Uart2Rxbuf.pbuf = &rx_buf[0];
 #endif
+	printf("bluetooth ok\n");
 	return 0;
 	bluetooth_error:
 	bluetooth_uart_remove();
