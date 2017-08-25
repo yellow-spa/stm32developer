@@ -14,7 +14,7 @@ int main(void)
 	usart_enable(USART1);
 	bluetooth_work_init();
 	usart_enable(USART2);
-	sensors_init();
+//	sensors_init();
 // led_init();
 // TIM3_PWM_Init(899,0);
 //	LCD_Init();
@@ -24,7 +24,7 @@ while(1)
 			systick_ms(10);	
 		  //ATKPackage_SendPeriod();
 			printf("test");
-		  sensors_test();
+	//	  sensors_test();
 	}
   return 0;
 }
