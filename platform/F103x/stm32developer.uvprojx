@@ -459,9 +459,34 @@
               <FilePath>..\..\hardware\include\ATKPackage.h</FilePath>
             </File>
             <File>
-              <FileName>HAL_MPU6050.h</FileName>
+              <FileName>i2c2.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\include\HAL_MPU6050.h</FilePath>
+              <FilePath>..\..\include\i2c2.h</FilePath>
+            </File>
+            <File>
+              <FileName>i2c-core.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\include\i2c-core.h</FilePath>
+            </File>
+            <File>
+              <FileName>sensors.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\include\sensors.h</FilePath>
+            </File>
+            <File>
+              <FileName>stabilizer_types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\stabilizer_types.h</FilePath>
+            </File>
+            <File>
+              <FileName>sensors_types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\sensors_types.h</FilePath>
+            </File>
+            <File>
+              <FileName>HMC5883L.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\include\HMC5883L.h</FilePath>
             </File>
             <File>
               <FileName>MPU6050.h</FileName>
@@ -539,9 +564,14 @@
               <FilePath>..\..\drivers\LCD\TFT\tftlcd-core.c</FilePath>
             </File>
             <File>
-              <FileName>MPU6050.c</FileName>
+              <FileName>i2c-gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\drivers\sensors\MPU6050lib\MPU6050.c</FilePath>
+              <FilePath>..\..\drivers\i2c\i2c-gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>sensors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\drivers\sensors\sensors.c</FilePath>
             </File>
           </Files>
         </Group>

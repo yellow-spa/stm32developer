@@ -3,8 +3,8 @@
 #include "stm32system.h"
 
 /*IO方向设置*/
-#define I2C2_SDA_IN()  {GPIOB->CRL&=0X0FFFFFFF;GPIOB->CRL|=(u32)8<<28;}
-#define I2C2_SDA_OUT() {GPIOB->CRL&=0X0FFFFFFF;GPIOB->CRL|=(u32)3<<28;}
+#define I2C2_SDA_IN()  {GPIOB->CRH&=0XFFFF0FFF;GPIOB->CRL|=(u32)8<<11;}
+#define I2C2_SDA_OUT() {GPIOB->CRH&=0XFFFF0FFF;GPIOB->CRL|=(u32)3<<11;}
 
 //IO操作函数	 
 #define I2C2_SCL    PBout(10) //SCL

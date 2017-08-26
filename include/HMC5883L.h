@@ -36,7 +36,6 @@ extern "C" {
 #endif 
 
 /* Includes */
-#include "HAL_HMC5883L.h" 
 #include <stdbool.h>
 #define HMC5883L_ADDRESS            0x1E // this device only has one address
 #define HMC5883L_DEFAULT_ADDRESS    (HMC5883L_ADDRESS<<1)
@@ -101,6 +100,7 @@ extern "C" {
 #define HMC5883L_STATUS_LOCK_BIT    1
 #define HMC5883L_STATUS_READY_BIT   0
 
+/*
 void HMC5883L_Initialize();
 bool HMC5883L_TestConnection();
 
@@ -134,7 +134,7 @@ void HMC5883L_ReadBit(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitNum, uint8_
 void HMC5883L_I2C_Init();
 void HMC5883L_I2C_ByteWrite(u8 slaveAddr, u8* pBuffer, u8 WriteAddr);
 void HMC5883L_I2C_BufferRead(u8 slaveAddr,u8* pBuffer, u8 ReadAddr, u16 NumByteToRead);
-
+*/
 #ifdef __cplusplus
 }
 #endif

@@ -36,7 +36,7 @@ extern "C" {
 #endif
 
 /* Includes */
-#include "HAL_MPU6050.h"
+
 
 #define MPU6050_ADDRESS_AD0_LOW     0x68 // address pin low (GND), default for InvenSense evaluation board
 #define MPU6050_ADDRESS_AD0_HIGH    0x69 // address pin high (VCC)
@@ -391,6 +391,7 @@ extern "C" {
 #define MPU6050_DMP_MEMORY_BANK_SIZE    256
 #define MPU6050_DMP_MEMORY_CHUNK_SIZE   16
 
+/*
 void MPU6050_Initialize();
 bool MPU6050_TestConnection();
 
@@ -418,7 +419,7 @@ void MPU6050_ReadBit(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitNum, uint8_t
 void MPU6050_I2C_Init();
 void MPU6050_I2C_ByteWrite(u8 slaveAddr, u8* pBuffer, u8 writeAddr);
 void MPU6050_I2C_BufferRead(u8 slaveAddr,u8* pBuffer, u8 readAddr, u16 NumByteToRead);
-
+*/
 #ifdef __cplusplus
 }
 #endif
