@@ -16,7 +16,7 @@ int main(void)
 	bluetooth_work_init();
 	usart_enable(USART2);
 	i2c2_gpio_init();
-//	sensors_init();
+	sensors_init();
 // led_init();
 // TIM3_PWM_Init(899,0);
 //	LCD_Init();

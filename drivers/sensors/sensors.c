@@ -2,18 +2,16 @@
 #include "MPU6050.h"
 #include "HMC5883L.h"
 #include "usart.h"
+#include "i2c2.h"
 #include <stdbool.h>
 void sensors_init(void)
 {
-	MPU6050_I2C_Init();
-	MPU6050_Initialize();
+	bool isMPU6050_Init;
+	i2c2_gpio_init();
+	isMPU6050_Init = MPU6050_Initialize();
+	if(!isMPU6050_Init)
+	{
+		printf("sensorerror!\n");
+	}
 	//HMC5883L_Initialize();
-}
-void sensors_test(void)
-{
-	bool status;
-	status = MPU6050_TestConnection();
-	//printf("MPU%d",status);
-//	status = HMC5883L_TestConnection();
-//	printf("HMC%d",status);
 }

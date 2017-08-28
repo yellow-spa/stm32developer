@@ -30,7 +30,8 @@
 
 #ifndef _MPU6050_H_
 #define _MPU6050_H_
-#include <stdbool.h>
+#include "stm32f10x_conf.h"
+#include "stdbool.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -391,35 +392,30 @@ extern "C" {
 #define MPU6050_DMP_MEMORY_BANK_SIZE    256
 #define MPU6050_DMP_MEMORY_CHUNK_SIZE   16
 
-/*
-void MPU6050_Initialize();
-bool MPU6050_TestConnection();
 
-// GYRO_CONFIG register
-uint8_t MPU6050_GetFullScaleGyroRange();
-void MPU6050_SetFullScaleGyroRange(uint8_t range);
-// ACCEL_CONFIG register
-uint8_t MPU6050_GetFullScaleAccelRange();
-void MPU6050_SetFullScaleAccelRange(uint8_t range);
+#define MPU6050_INT_ENABLE_DATA_RAY_EN_BIT 0
 
-// PWR_MGMT_1 register
-bool MPU6050_GetSleepModeStatus();
-void MPU6050_SetSleepModeStatus(FunctionalState NewState);
+#define MPU6050_INT_PIN_CFG_BYPASS      1
+
+bool MPU6050_Initialize(void);
 void MPU6050_SetClockSource(uint8_t source);
-// WHO_AM_I register
+void MPU6050_SetFullScaleGyroRange(uint8_t range);
+void MPU6050_SetFullScaleAccelRange(uint8_t range);
+void MPU6050_DeviceReset(FunctionalState NewState);
+void MPU6050_SampleRateDivider(uint8_t range);
+void MPU6050_Configuration_DLPF(uint8_t range);
+bool MPU6050_TestConnection();
 uint8_t MPU6050_GetDeviceID();
+void MPU6050_Int_Enable(FunctionalState NewState);
+void MPU6050_Int_Pin_CFG_Bypass_Enable(FunctionalState NewState);
 
-void MPU6050_GetRawAccelGyro(s16* AccelGyro);
 
 void MPU6050_WriteBits(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitStart, uint8_t length, uint8_t data);
 void MPU6050_WriteBit(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitNum, uint8_t data);
 void MPU6050_ReadBits(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitStart, uint8_t length, uint8_t *data);
-void MPU6050_ReadBit(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitNum, uint8_t *data);
 
-void MPU6050_I2C_Init();
-void MPU6050_I2C_ByteWrite(u8 slaveAddr, u8* pBuffer, u8 writeAddr);
-void MPU6050_I2C_BufferRead(u8 slaveAddr,u8* pBuffer, u8 readAddr, u16 NumByteToRead);
-*/
+void MPU6050_GetAccelRawData(s16* ax, s16* ay, s16* az);
+void MPU6050_GetGyroRawData(s16* gx, s16* gy, s16* gz);
 #ifdef __cplusplus
 }
 #endif

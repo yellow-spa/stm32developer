@@ -1,10 +1,10 @@
 #include "MPU6050.h"
-#include "stm32f10x_conf.h"
+#include "stm32f10x.h"
 #include "i2c-core.h"
 
 /******************************++++++++++++Initialize+++++++++++++++++++++**********************/
 
-bool MPU6050_Initialize()
+bool MPU6050_Initialize(void)
 {
 	  bool Status;
 	  MPU6050_DeviceReset(ENABLE);
@@ -15,9 +15,11 @@ bool MPU6050_Initialize()
 			printf("MPU6050 Initialize Fail!");
 		}
     MPU6050_SetClockSource(MPU6050_CLOCK_PLL_ZGYRO);//时钟源跟Z轴对齐 
+	  MPU6050_Int_Enable(DISABLE);	/*关闭中断*/
+	  MPU6050_Int_Pin_CFG_Bypass_Enable(ENABLE);	/*使能I2C BYPASS*/
     MPU6050_SetFullScaleGyroRange(MPU6050_GYRO_FS_2000);//gyro的刻度设置 2000
     MPU6050_SetFullScaleAccelRange(MPU6050_ACCEL_FS_8);//acc的刻度设置 ±8G
-		MPU6050_SampleRateDivider(0x01)			/*采样速率(1000/(1+1)=500Hz)*/
+		MPU6050_SampleRateDivider(0x01);			/*采样速率(1000/(1+1)=500Hz)*/
 	  MPU6050_Configuration_DLPF(MPU6050_DLPF_BW_98);	/*数字低通滤波器带宽*/
 	  return Status;
 }
@@ -87,6 +89,21 @@ void MPU6050_SampleRateDivider(uint8_t range)
 void MPU6050_Configuration_DLPF(uint8_t range)
 {
 	 MPU6050_WriteBits(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_CONFIG, MPU6050_CFG_DLPF_CFG_BIT, MPU6050_CFG_DLPF_CFG_LENGTH, range);
+}
+
+/****
+*中断开关
+*/
+void MPU6050_Int_Enable(FunctionalState NewState)
+{
+    MPU6050_WriteBit(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_INT_ENABLE, MPU6050_INT_ENABLE_DATA_RAY_EN_BIT, NewState);
+}
+/**
+*启用i2c bypass,让I2C也能够访问HCM5883L
+**/
+void MPU6050_Int_Pin_CFG_Bypass_Enable(FunctionalState NewState)
+{
+	  MPU6050_WriteBit(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_INT_PIN_CFG, MPU6050_INT_PIN_CFG_BYPASS, NewState);
 }
 /******************************---------------Initialize--------------**********************/
 
@@ -181,3 +198,34 @@ void MPU6050_ReadBits(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitStart, uint
     tmp >>= (bitStart - length + 1);
     *data = tmp;
 }
+
+/** Get raw 6-axis motion sensor readings (accel/gyro).
+ * Retrieves all currently available motion sensor values.
+ * @param AccelGyro 16-bit signed integer array of length 6
+ * @see MPU6050_RA_ACCEL_XOUT_H
+ */
+/*获取ACC 3轴原始数据*/
+void MPU6050_GetAccelRawData(s16* ax, s16* ay, s16* az)
+{
+  s8 buffer[6]={0};
+	i2c2DevRead(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 6, buffer);
+	*ax = (((s16) buffer[0]) << 8) | buffer[1];
+	*ay = (((s16) buffer[2]) << 8) | buffer[3];
+	*az = (((s16) buffer[4]) << 8) | buffer[5];
+}
+
+/** Get raw 6-axis motion sensor readings (accel/gyro).
+ * Retrieves all currently available motion sensor values.
+ * @param AccelGyro 16-bit signed integer array of length 6
+ * @see MPU6050_RA_GYRO_XOUT_H
+ */
+/*获取gyro 3轴原始数据*/
+void MPU6050_GetGyroRawData(s16* gx, s16* gy, s16* gz)
+{
+	s8 buffer[6]={0};
+	i2c2DevRead(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H, 6, buffer);
+	*gx = (((s16) buffer[0]) << 8) | buffer[1];
+	*gy = (((s16) buffer[2]) << 8) | buffer[3];
+	*gz = (((s16) buffer[4]) << 8) | buffer[5];
+}
+
