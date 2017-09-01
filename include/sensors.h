@@ -22,7 +22,7 @@
 #define SENSORS_ACC_IIR_FACTOR		(float)(1/(1+SENSORS_ACC_IIR_LPF_ATTENUATION))
 	
 
-bool sensors_init(void);
+void sensors_init(void);
 
 bool sensorsTest(void);	/*传感器测试*/
 bool sensorsAreCalibrated(void);	/*传感器数据校准*/

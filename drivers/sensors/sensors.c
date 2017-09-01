@@ -6,12 +6,16 @@
 #include <stdbool.h>
 #include "sensors.h"
 #include "hardwareconfig.h"
-
+#include "HMC5883L.h"
 
 #define SENSORS_BIAS_SAMPLES		512		/*计算方差的采样样本个数*/
 #define GYRO_VARIANCE_BASE			5000	/* 陀螺仪零偏方差阈值 */
 #define GYRO_MIN_BIAS_TIMEOUT_MS   (1000)
 static float sensorsAccLpfAttFactor;
+
+static bool isMPUPresent=false;
+static bool isMAGPresent=false;
+
 
 typedef struct
 {
@@ -27,6 +31,7 @@ BiasObj	gyroBias;
 static Axis3i16	gyroRaw;
 static Axis3i16	accRaw;
 static Axis3i16 magRaw;
+
 static Axis3i16	accLPF;
 
 static void sensorsBiasInit(BiasObj* bias)
@@ -36,7 +41,7 @@ static void sensorsBiasInit(BiasObj* bias)
 }
 
 
-bool sensors_init(void)
+void sensors_init(void)
 {
 	bool Status;
 	#if MPU6050APK_SUPPORT
@@ -45,14 +50,22 @@ bool sensors_init(void)
 	i2c2_gpio_init();
 	#endif
 	Status = MPU6050_Initialize();
-	if(!Status)
+	if(Status)
 	{
-		printf("sensorerror!\n");
+		isMPUPresent = true;
+		printf("mpu sensor work!\n");
 	}
+	
+	Status = HMC5883L_Initialize();
+	if(Status)
+	{
+		isMAGPresent = true;
+		printf("akm sensor work!\n");
+	}
+	
 	sensorsBiasInit(&gyroBias);
 	sensorsAccLpfAttFactor = SENSORS_ACC_IIR_FACTOR;
-	return Status;
-	//HMC5883L_Initialize();
+	
 }
 
 void getSensorRawData(Axis3i16* acc, Axis3i16* gyro, Axis3i16* mag)
@@ -173,11 +186,37 @@ bool sensorsAreCalibrated()	/*传感器数据校准*/
 }
 void sensor9Read(Axis3f* gyroOut, Axis3f* accOut, Axis3f* magOut)
 {
-	sensor6Read(gyroOut, accOut);
+	  if(isMPUPresent)
+		{
+	    sensor6Read(gyroOut, accOut);
+		}else{
+			 gyroOut->x = 0.0;
+       gyroOut->y = 0.0;
+       gyroOut->z = 0.0;
+			 accOut->x = 0.0;
+       accOut->y = 0.0;
+       accOut->z = 0.0;
+		}
+	if(isMAGPresent)
+	{
+		s16 buf[3];
+		HMC5883L_GetHeading(buf);
+  // 	HMC5883L_GetLockStatus();
+		magOut->x = -(float)buf[0] / MAG_GAUSS_PER_LSB;
+		magOut->y = (float)buf[1] / MAG_GAUSS_PER_LSB;
+		magOut->z = (float)buf[2] / MAG_GAUSS_PER_LSB;
+		magRaw.x = buf[0];
+		magRaw.y = buf[1];
+		magRaw.z = buf[2];
+		#if DEBUG_MODE
+		printf("%f,%f,%f",magOut->x,magOut->y,magOut->z);
+			#endif
+	}else{
 	magOut->x = 0.0;
   magOut->y = 0.0;
 	magOut->z = 0.0;
-
+  }
+	
 }
 
 void sensorsAcquire(sensorData_t *sensors, const u32 tick)	/*获取传感器数据*/
@@ -187,7 +226,7 @@ void sensorsAcquire(sensorData_t *sensors, const u32 tick)	/*获取传感器数据*/
 		sensor9Read(&sensors->gyro, &sensors->acc, &sensors->mag);
 	}
 	#if DEBUG_MODE
-    printf("%f,%f,%f,%f,%f,%f\n",sensors->acc.x,sensors->acc.y,sensors->acc.z,sensors->gyro.x,sensors->gyro.y,sensors->gyro.z);
+    printf("%f,%f,%f,%f,%f,%f,%f,%f,%f\n",sensors->acc.x,sensors->acc.y,sensors->acc.z,sensors->gyro.x,sensors->gyro.y,sensors->gyro.z,sensors->mag.x,sensors->mag.y,sensors->mag.z);
 	#endif
 //	if (RATE_DO_EXECUTE(BARO_UPDATE_RATE, tick) && isBaroPresent==true) /** 50Hz 40ms update **/
 //	{	

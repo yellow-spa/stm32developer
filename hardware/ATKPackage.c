@@ -258,7 +258,7 @@ void ATKPackage_SendPeriod(void)
 		Axis3i16 gyro;
 		Axis3i16 mag;
 		getSensorRawData(&acc, &gyro, &mag);
-		ATKPackage_Send_Senser(acc.x, acc.y, acc.z, gyro.x, gyro.y, gyro.z,0,0,0);
+		ATKPackage_Send_Senser(acc.x, acc.y, acc.z, gyro.x, gyro.y, gyro.z,mag.x,mag.y,mag.z);
 	}
 	if(!(count_ms % PERIOD_RCDATA))
 	{
@@ -287,7 +287,6 @@ void ATKPackage_SendPeriod(void)
 	//	sendSenser2(baro,0);
 	}
 	if(++count_ms>=65535) 
-		count_ms = 1;
-  printf("%d\n",count_ms);	
+		count_ms = 1;	
 }
 //heihei

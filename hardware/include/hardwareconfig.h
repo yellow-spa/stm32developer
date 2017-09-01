@@ -1,3 +1,3 @@
 #define UART_ATK_SUPPORT 1
 #define MPU6050APK_SUPPORT 1
-#define DEBUG_MODE 1
+#define DEBUG_MODE 0
