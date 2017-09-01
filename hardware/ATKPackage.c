@@ -3,6 +3,7 @@
 #include "usart.h"
 #include "stabilizer_types.h"
 #include "sensors_types.h"
+#include "sensors.h"
 /////////////////////////////////////////////////////////////////////////////////////
 //数据拆分宏定义，在发送大于1字节的数据类型时，比如int16、float等，需要把数据拆分成单独字节进行发送
 #define BYTE0(dwTemp)       ( *( (char *)(&dwTemp)		) )
@@ -195,6 +196,51 @@ void ATKPackage_Send_Version(u8 hardware_type, u16 hardware_ver,u16 software_ver
   ATKPackage_SendBuffer(txPacket);
 }
 
+static void ATKPackage_Send_Senser(s16 a_x,s16 a_y,s16 a_z,s16 g_x,s16 g_y,s16 g_z,s16 m_x,s16 m_y,s16 m_z)
+{
+	u8 _cnt=0;
+	ATKPack_t p;
+	vs16 _temp;
+	
+	p.funcID = UP_SENSER;
+
+	_temp = a_x;
+	p.data[_cnt++]=BYTE1(_temp);
+	p.data[_cnt++]=BYTE0(_temp);
+	_temp = a_y;
+	p.data[_cnt++]=BYTE1(_temp);
+	p.data[_cnt++]=BYTE0(_temp);
+	_temp = a_z;	
+	p.data[_cnt++]=BYTE1(_temp);
+	p.data[_cnt++]=BYTE0(_temp);
+	
+	_temp = g_x;	
+	p.data[_cnt++]=BYTE1(_temp);
+	p.data[_cnt++]=BYTE0(_temp);
+	_temp = g_y;	
+	p.data[_cnt++]=BYTE1(_temp);
+	p.data[_cnt++]=BYTE0(_temp);
+	_temp = g_z;	
+	p.data[_cnt++]=BYTE1(_temp);
+	p.data[_cnt++]=BYTE0(_temp);
+	
+	_temp = m_x;	
+	p.data[_cnt++]=BYTE1(_temp);
+	p.data[_cnt++]=BYTE0(_temp);
+	_temp = m_y;	
+	p.data[_cnt++]=BYTE1(_temp);
+	p.data[_cnt++]=BYTE0(_temp);
+	_temp = m_z;	
+	p.data[_cnt++]=BYTE1(_temp);
+	p.data[_cnt++]=BYTE0(_temp);
+	_temp = 0;	
+	p.data[_cnt++]=BYTE1(_temp);
+	p.data[_cnt++]=BYTE0(_temp);	
+	
+	p.dataLen = _cnt;
+	ATKPackage_SendBuffer(p);
+}
+
 //数据周期上报给上位机，每1ms报一次
 void ATKPackage_SendPeriod(void)
 {
@@ -208,11 +254,11 @@ void ATKPackage_SendPeriod(void)
 	}
 	if(!(count_ms % PERIOD_SENSOR))
 	{
-		sensordata_i16 acc;
-		sensordata_i16 gyro;
-		sensordata_i16 mag;
-	//	getSensorRawData(&acc, &gyro, &mag);
-	//	sendSenser(acc.x, acc.y, acc.z, gyro.x, gyro.y, gyro.z,0,0,0);				
+		Axis3i16 acc;
+		Axis3i16 gyro;
+		Axis3i16 mag;
+		getSensorRawData(&acc, &gyro, &mag);
+		ATKPackage_Send_Senser(acc.x, acc.y, acc.z, gyro.x, gyro.y, gyro.z,0,0,0);
 	}
 	if(!(count_ms % PERIOD_RCDATA))
 	{
@@ -241,6 +287,7 @@ void ATKPackage_SendPeriod(void)
 	//	sendSenser2(baro,0);
 	}
 	if(++count_ms>=65535) 
-		count_ms = 1;	
+		count_ms = 1;
+  printf("%d\n",count_ms);	
 }
 //heihei

@@ -1,29 +1,41 @@
 #include "MPU6050.h"
 #include "stm32f10x.h"
 #include "i2c-core.h"
-
+#include "hardwareconfig.h"
 /******************************++++++++++++Initialize+++++++++++++++++++++**********************/
 
 bool MPU6050_Initialize(void)
 {
 	  bool Status;
 	  MPU6050_DeviceReset(ENABLE);
-	  systick_ms(50);
+	  systick_ms(500);
 	  Status = MPU6050_TestConnection();
 	  if(!Status)
 		{
 			printf("MPU6050 Initialize Fail!");
 		}
+		
     MPU6050_SetClockSource(MPU6050_CLOCK_PLL_ZGYRO);//时钟源跟Z轴对齐 
-	  MPU6050_Int_Enable(DISABLE);	/*关闭中断*/
-	  MPU6050_Int_Pin_CFG_Bypass_Enable(ENABLE);	/*使能I2C BYPASS*/
+	  MPU6050_Int_Enable(DISABLE);	//关闭中断
+	  MPU6050_Int_Pin_CFG_Bypass_Enable(ENABLE);	//使能I2C BYPASS
     MPU6050_SetFullScaleGyroRange(MPU6050_GYRO_FS_2000);//gyro的刻度设置 2000
     MPU6050_SetFullScaleAccelRange(MPU6050_ACCEL_FS_8);//acc的刻度设置 ±8G
-		MPU6050_SampleRateDivider(0x01);			/*采样速率(1000/(1+1)=500Hz)*/
-	  MPU6050_Configuration_DLPF(MPU6050_DLPF_BW_98);	/*数字低通滤波器带宽*/
+		MPU6050_SampleRateDivider(0x01);			//采样速率(1000/(1+1)=500Hz)
+	  MPU6050_Configuration_DLPF(MPU6050_DLPF_BW_98);	//数字低通滤波器带宽
+    MPU6050_SetSleepModeStatus(DISABLE);
 	  return Status;
 }
 
+/** Set sleep mode status.
+ * @param enabled New sleep mode enabled status
+ * @see MPU6050_GetSleepModeStatus()
+ * @see MPU6050_RA_PWR_MGMT_1
+ * @see MPU6050_PWR1_SLEEP_BIT
+ */
+void MPU6050_SetSleepModeStatus(FunctionalState NewState)
+{
+    MPU6050_WriteBit(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_PWR_MGMT_1, MPU6050_PWR1_SLEEP_BIT, NewState);
+}
 /** Set clock source setting.
  * <pre>
  * CLK_SEL | Clock Source
@@ -146,9 +158,17 @@ uint8_t MPU6050_GetDeviceID()
 void MPU6050_WriteBit(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitNum, uint8_t data)
 {
     uint8_t tmp;
+	 #if MPU6050APK_SUPPORT
+	  MPU6050_I2C_BufferRead(slaveAddr, &tmp, regAddr, 1);
+	 #else
     tmp = i2c2DevReadByte(slaveAddr, regAddr);
+	 #endif
     tmp = (data != 0) ? (tmp | (1 << bitNum)) : (tmp & ~(1 << bitNum));
+	  #if MPU6050APK_SUPPORT
+	   MPU6050_I2C_ByteWrite(slaveAddr, &tmp, regAddr);
+	  #else
     i2c2DevWriteByte(slaveAddr, regAddr,tmp);
+	 #endif
 }
 
 
@@ -171,13 +191,21 @@ void MPU6050_WriteBits(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitStart, uin
     // 10101011 masked | value
     uint8_t tmp;
 	  uint8_t mask;
+	  #if MPU6050APK_SUPPORT
+	   MPU6050_I2C_BufferRead(slaveAddr, &tmp, regAddr, 1);
+	  #else
   	tmp = i2c2DevReadByte(slaveAddr,regAddr);
+	  #endif
     mask = ((1 << length) - 1) << (bitStart - length + 1);
     data <<= (bitStart - length + 1); // shift data into correct position
     data &= mask; // zero all non-important bits in data
     tmp &= ~(mask); // zero all important bits in existing byte
     tmp |= data; // combine data with existing byte
+	  #if MPU6050APK_SUPPORT
+	  MPU6050_I2C_ByteWrite(slaveAddr, &tmp, regAddr);
+		#else
     i2c2DevWriteByte(slaveAddr, regAddr,tmp);
+		#endif
 }
 
 /** Read multiple bits from an 8-bit device register.
@@ -192,7 +220,11 @@ void MPU6050_ReadBits(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitStart, uint
 {
     uint8_t tmp;
 	  uint8_t mask;
+	  #if MPU6050APK_SUPPORT
+	   MPU6050_I2C_BufferRead(slaveAddr, &tmp, regAddr, 1);
+	 #else
 	  tmp = i2c2DevReadByte(slaveAddr,regAddr);
+	#endif
     mask = ((1 << length) - 1) << (bitStart - length + 1);
     tmp &= mask;
     tmp >>= (bitStart - length + 1);
@@ -208,7 +240,12 @@ void MPU6050_ReadBits(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitStart, uint
 void MPU6050_GetAccelRawData(s16* ax, s16* ay, s16* az)
 {
   s8 buffer[6]={0};
+	int i;
+	#if MPU6050APK_SUPPORT
+	MPU6050_I2C_BufferRead(MPU6050_DEFAULT_ADDRESS, buffer, MPU6050_RA_ACCEL_XOUT_H, 6);
+	#else
 	i2c2DevRead(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 6, buffer);
+	#endif
 	*ax = (((s16) buffer[0]) << 8) | buffer[1];
 	*ay = (((s16) buffer[2]) << 8) | buffer[3];
 	*az = (((s16) buffer[4]) << 8) | buffer[5];
@@ -223,7 +260,11 @@ void MPU6050_GetAccelRawData(s16* ax, s16* ay, s16* az)
 void MPU6050_GetGyroRawData(s16* gx, s16* gy, s16* gz)
 {
 	s8 buffer[6]={0};
+  #if MPU6050APK_SUPPORT
+	MPU6050_I2C_BufferRead(MPU6050_DEFAULT_ADDRESS, buffer, MPU6050_RA_GYRO_XOUT_H, 6);
+	#else
 	i2c2DevRead(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H, 6, buffer);
+	#endif
 	*gx = (((s16) buffer[0]) << 8) | buffer[1];
 	*gy = (((s16) buffer[2]) << 8) | buffer[3];
 	*gz = (((s16) buffer[4]) << 8) | buffer[5];

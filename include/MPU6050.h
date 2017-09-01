@@ -397,6 +397,24 @@ extern "C" {
 
 #define MPU6050_INT_PIN_CFG_BYPASS      1
 
+/*** add ***/
+#define MPU6500_DEG_PER_LSB_250  (float)((2 * 250.0) / 65536.0)
+#define MPU6500_DEG_PER_LSB_500  (float)((2 * 500.0) / 65536.0)
+#define MPU6500_DEG_PER_LSB_1000 (float)((2 * 1000.0) / 65536.0)
+#define MPU6500_DEG_PER_LSB_2000 (float)((2 * 2000.0) / 65536.0)
+
+#define MPU6500_G_PER_LSB_2      (float)((2 * 2) / 65536.0)
+#define MPU6500_G_PER_LSB_4      (float)((2 * 4) / 65536.0)
+#define MPU6500_G_PER_LSB_8      (float)((2 * 8) / 65536.0)
+#define MPU6500_G_PER_LSB_16     (float)((2 * 16) / 65536.0)
+
+// Test limits
+#define MPU6500_ST_GYRO_LOW      (-14.0)  // %
+#define MPU6500_ST_GYRO_HIGH     14.0  // %
+#define MPU6500_ST_ACCEL_LOW     (-14.0)  // %
+#define MPU6500_ST_ACCEL_HIGH    14.0  // %
+/****add ***/
+
 bool MPU6050_Initialize(void);
 void MPU6050_SetClockSource(uint8_t source);
 void MPU6050_SetFullScaleGyroRange(uint8_t range);
@@ -408,7 +426,7 @@ bool MPU6050_TestConnection();
 uint8_t MPU6050_GetDeviceID();
 void MPU6050_Int_Enable(FunctionalState NewState);
 void MPU6050_Int_Pin_CFG_Bypass_Enable(FunctionalState NewState);
-
+void MPU6050_SetSleepModeStatus(FunctionalState NewState);
 
 void MPU6050_WriteBits(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitStart, uint8_t length, uint8_t data);
 void MPU6050_WriteBit(uint8_t slaveAddr, uint8_t regAddr, uint8_t bitNum, uint8_t data);

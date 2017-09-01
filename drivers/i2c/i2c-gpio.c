@@ -1,11 +1,50 @@
 #include "gpio.h"
 #include "i2c2.h"
 #include "stm32f10x_conf.h"
+#include "hardwareconfig.h"
+#include "mpu6050.h"
+#if MPU6050APK_SUPPORT
+/**
+ * @brief  Initializes the I2C peripheral used to drive the MPU6050
+ * @param  None
+ * @return None
+ */
+void MPU6050_I2C_Init()
+{
+    I2C_InitTypeDef I2C_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure;
+
+    /* Enable I2C and GPIO clocks */
+    RCC_APB1PeriphClockCmd(MPU6050_I2C_RCC_Periph, ENABLE);
+    RCC_APB2PeriphClockCmd(MPU6050_I2C_RCC_Port, ENABLE);
+
+    /* Configure I2C pins: SCL and SDA */
+    GPIO_InitStructure.GPIO_Pin = MPU6050_I2C_SCL_Pin | MPU6050_I2C_SDA_Pin;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+    GPIO_Init(MPU6050_I2C_Port, &GPIO_InitStructure);
+
+    /* I2C configuration */
+    I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+    I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+    I2C_InitStructure.I2C_OwnAddress1 = MPU6050_DEFAULT_ADDRESS; // MPU6050 7-bit adress = 0x68, 8-bit adress = 0xD0;
+    I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+    I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+    I2C_InitStructure.I2C_ClockSpeed = MPU6050_I2C_Speed;
+
+    /* Apply I2C configuration after enabling it */
+    I2C_Init(MPU6050_I2C, &I2C_InitStructure);
+    /* I2C Peripheral Enable */
+    I2C_Cmd(MPU6050_I2C, ENABLE);
+}
+
+
+#endif
 
 void i2c2_gpio_init(void)
 {
-	gpio_register_output(RCC_APB2Periph_GPIOB,GPIOB,GPIO_Pin_10,GPIO_Speed_50MHz,GPIO_Mode_Out_PP);
-	gpio_register_output(RCC_APB2Periph_GPIOB,GPIOB,GPIO_Pin_11,GPIO_Speed_50MHz,GPIO_Mode_Out_PP);
+	gpio_register_output(RCC_APB2Periph_GPIOB,GPIOB,GPIO_Pin_6,GPIO_Speed_50MHz,GPIO_Mode_Out_PP);
+	gpio_register_output(RCC_APB2Periph_GPIOB,GPIOB,GPIO_Pin_7,GPIO_Speed_50MHz,GPIO_Mode_Out_PP);
 }
 
 //产生i2c2起始信号
@@ -116,6 +155,7 @@ u8 i2c2_Read_One_Byte(unsigned char ack)
     if (!ack)
         i2c2_NAck();//发送nACK
     else
-        i2c2_Ack(); //发送ACK   
+        i2c2_Ack(); //发送ACK
     return receive;
 }
+

@@ -8,6 +8,10 @@
 #include "ATKPackage.h"
 #include "sensors.h"
 #include "i2c2.h"
+
+
+static sensorData_t sensorData;	/*传感器数据*/
+
 int main(void)
 {	
 	systick_init();
@@ -15,7 +19,6 @@ int main(void)
 	usart_enable(USART1);
 	bluetooth_work_init();
 	usart_enable(USART2);
-	i2c2_gpio_init();
 	sensors_init();
 // led_init();
 // TIM3_PWM_Init(899,0);
@@ -23,9 +26,10 @@ int main(void)
 //	tftlcd_print_id();
 while(1)
 	{
-			systick_ms(10);	
-		  //ATKPackage_SendPeriod();
-			printf("test");
+			//systick_ms(500);	
+		  sensorsAcquire(&sensorData, 500);
+		  ATKPackage_SendPeriod();
+		//	printf("test");
 	//	  sensors_test();
 	}
   return 0;

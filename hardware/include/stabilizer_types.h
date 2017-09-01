@@ -25,6 +25,7 @@ typedef struct vec3_s point_t;
 typedef struct vec3_s velocity_t;
 typedef struct vec3_s acc_t;
 
+
 typedef struct
 {
 	float pressure;
@@ -34,9 +35,9 @@ typedef struct
 
 typedef struct
 {
-	sensordata_f acc;
-	sensordata_f gyro;
-	sensordata_f mag;
+	Axis3f acc;
+	Axis3f gyro;
+	Axis3f mag;
 	baro_t baro;
 	point_t position;
 } sensorData_t;
@@ -97,6 +98,5 @@ typedef struct
 #define MAIN_LOOP_DT	(u32)(1000/MAIN_LOOP_RATE)	/*µ¥Î»ms*/
 
 #define RATE_DO_EXECUTE(RATE_HZ, TICK) ((TICK % (MAIN_LOOP_RATE / RATE_HZ)) == 0)
-
 
 #endif
