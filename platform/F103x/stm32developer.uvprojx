@@ -478,6 +478,11 @@
               <FileType>5</FileType>
               <FilePath>..\..\include\sensors.h</FilePath>
             </File>
+            <File>
+              <FileName>HMC5883L.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\include\HMC5883L.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -562,6 +567,11 @@
               <FileName>sensors.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\drivers\sensors\sensors.c</FilePath>
+            </File>
+            <File>
+              <FileName>hmc5883l.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\drivers\sensors\hmc\hmc5883l.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -226,7 +226,7 @@ void sensorsAcquire(sensorData_t *sensors, const u32 tick)	/*获取传感器数据*/
 		sensor9Read(&sensors->gyro, &sensors->acc, &sensors->mag);
 	}
 	#if DEBUG_MODE
-    printf("%f,%f,%f,%f,%f,%f,%f,%f,%f\n",sensors->acc.x,sensors->acc.y,sensors->acc.z,sensors->gyro.x,sensors->gyro.y,sensors->gyro.z,sensors->mag.x,sensors->mag.y,sensors->mag.z);
+	printf("sensors:%f,%f,%f,%f,%f,%f,%f,%f,%f\n",sensors->acc.x,sensors->acc.y,sensors->acc.z,sensors->gyro.x,sensors->gyro.y,sensors->gyro.z,sensors->mag.x,sensors->mag.y,sensors->mag.z);
 	#endif
 //	if (RATE_DO_EXECUTE(BARO_UPDATE_RATE, tick) && isBaroPresent==true) /** 50Hz 40ms update **/
 //	{	

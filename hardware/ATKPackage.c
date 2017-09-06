@@ -4,6 +4,7 @@
 #include "stabilizer_types.h"
 #include "sensors_types.h"
 #include "sensors.h"
+#include "battery.h"
 /////////////////////////////////////////////////////////////////////////////////////
 //数据拆分宏定义，在发送大于1字节的数据类型时，比如int16、float等，需要把数据拆分成单独字节进行发送
 #define BYTE0(dwTemp)       ( *( (char *)(&dwTemp)		) )
@@ -241,6 +242,22 @@ static void ATKPackage_Send_Senser(s16 a_x,s16 a_y,s16 a_z,s16 g_x,s16 g_y,s16 g
 	ATKPackage_SendBuffer(p);
 }
 
+static void sendPower(u16 votage, u16 current)
+{
+	u8 _cnt=0;
+	ATKPack_t p;
+	
+	p.funcID = UP_POWER;
+	
+	p.data[_cnt++]=BYTE1(votage);
+	p.data[_cnt++]=BYTE0(votage);
+	p.data[_cnt++]=BYTE1(current);
+	p.data[_cnt++]=BYTE0(current);
+	
+	p.dataLen = _cnt;
+	ATKPackage_SendBuffer(p);
+}
+
 //数据周期上报给上位机，每1ms报一次
 void ATKPackage_SendPeriod(void)
 {
@@ -267,8 +284,8 @@ void ATKPackage_SendPeriod(void)
 	}
 	if(!(count_ms % PERIOD_POWER))
 	{
-	//	float bat = pmGetBatteryVoltage();
-	//	sendPower(bat*100,500);
+	 	float bat = pmGetBatteryVoltage();
+		sendPower(bat*100,500);
 	}
 	if(!(count_ms % PERIOD_MOTOR))
 	{
