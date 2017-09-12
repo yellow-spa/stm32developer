@@ -43,8 +43,8 @@ void MPU6050_I2C_Init()
 
 void i2c2_gpio_init(void)
 {
-	gpio_register_output(RCC_APB2Periph_GPIOB,GPIOB,GPIO_Pin_6,GPIO_Speed_50MHz,GPIO_Mode_Out_PP);
-	gpio_register_output(RCC_APB2Periph_GPIOB,GPIOB,GPIO_Pin_7,GPIO_Speed_50MHz,GPIO_Mode_Out_PP);
+	gpio_register_output(RCC_APB2Periph_GPIOB,GPIOB,GPIO_Pin_10,GPIO_Speed_50MHz,GPIO_Mode_Out_PP);
+	gpio_register_output(RCC_APB2Periph_GPIOB,GPIOB,GPIO_Pin_11,GPIO_Speed_50MHz,GPIO_Mode_Out_PP);
 }
 
 //产生i2c2起始信号
@@ -125,11 +125,11 @@ void i2c2_Send_One_Byte(u8 txd)
     I2C2_SCL=0;//拉低时钟开始数据传输
     for(t=0;t<8;t++)
     {              
-        //IIC_SDA=(txd&0x80)>>7;
-		if((txd&0x80)>>7)
+       I2C2_SDA=(txd&0x80)>>7;
+	/*	if((txd&0x80)>>7)
 			I2C2_SDA=1;
 		else
-			I2C2_SDA=0;
+			I2C2_SDA=0;*/
 		txd<<=1; 	  
 		systick_us(2);   //对TEA5767这三个延时都是必须的
 		I2C2_SCL=1;

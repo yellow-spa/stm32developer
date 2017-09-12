@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\FWLib\inc;..\..\Libraries\Core;..\..\include;..\..\Libraries;..\..\hardware\include</IncludePath>
+              <IncludePath>..\..\Libraries\FWLib\inc;..\..\Libraries\Core;..\..\include;..\..\Libraries;..\..\hardware\include;..\..\framework\include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -449,11 +449,6 @@
               <FilePath>..\..\include\pwm.h</FilePath>
             </File>
             <File>
-              <FileName>tftlcd.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\include\tftlcd.h</FilePath>
-            </File>
-            <File>
               <FileName>ATKPackage.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\hardware\include\ATKPackage.h</FilePath>
@@ -482,6 +477,61 @@
               <FileName>HMC5883L.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\include\HMC5883L.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32system.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\include\stm32system.h</FilePath>
+            </File>
+            <File>
+              <FileName>motors.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\motors.h</FilePath>
+            </File>
+            <File>
+              <FileName>battery.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\battery.h</FilePath>
+            </File>
+            <File>
+              <FileName>config_param.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\config_param.h</FilePath>
+            </File>
+            <File>
+              <FileName>font.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\font.h</FilePath>
+            </File>
+            <File>
+              <FileName>hardwareconfig.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\hardwareconfig.h</FilePath>
+            </File>
+            <File>
+              <FileName>pid.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\pid.h</FilePath>
+            </File>
+            <File>
+              <FileName>pwm-led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\pwm-led.h</FilePath>
+            </File>
+            <File>
+              <FileName>sensors_types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\sensors_types.h</FilePath>
+            </File>
+            <File>
+              <FileName>stabilizer_types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\stabilizer_types.h</FilePath>
+            </File>
+            <File>
+              <FileName>tftlcd_hardware.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\hardware\include\tftlcd_hardware.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -544,16 +594,6 @@
               <FilePath>..\..\drivers\timer\timer-core.c</FilePath>
             </File>
             <File>
-              <FileName>tftlcd-config.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\drivers\LCD\TFT\tftlcd-config.c</FilePath>
-            </File>
-            <File>
-              <FileName>tftlcd-core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\drivers\LCD\TFT\tftlcd-core.c</FilePath>
-            </File>
-            <File>
               <FileName>i2c-gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\drivers\i2c\i2c-gpio.c</FilePath>
@@ -572,6 +612,11 @@
               <FileName>hmc5883l.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\drivers\sensors\hmc\hmc5883l.c</FilePath>
+            </File>
+            <File>
+              <FileName>adc-core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\drivers\ADC\adc-core.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -729,9 +774,24 @@
               <FilePath>..\..\hardware\ATKPackage.c</FilePath>
             </File>
             <File>
-              <FileName>tftlcd_hardware.c</FileName>
+              <FileName>Battery.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\hardware\tftlcd_hardware.c</FilePath>
+              <FilePath>..\..\hardware\Battery.c</FilePath>
+            </File>
+            <File>
+              <FileName>Motors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\hardware\Motors.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>framework</GroupName>
+          <Files>
+            <File>
+              <FileName>power_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\framework\power_control.c</FilePath>
             </File>
           </Files>
         </Group>

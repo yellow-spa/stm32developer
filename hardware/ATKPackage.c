@@ -5,6 +5,7 @@
 #include "sensors_types.h"
 #include "sensors.h"
 #include "battery.h"
+#include "power_control.h"
 /////////////////////////////////////////////////////////////////////////////////////
 //数据拆分宏定义，在发送大于1字节的数据类型时，比如int16、float等，需要把数据拆分成单独字节进行发送
 #define BYTE0(dwTemp)       ( *( (char *)(&dwTemp)		) )
@@ -258,6 +259,34 @@ static void sendPower(u16 votage, u16 current)
 	ATKPackage_SendBuffer(p);
 }
 
+static void sendMotorPWM(u16 m_1,u16 m_2,u16 m_3,u16 m_4,u16 m_5,u16 m_6,u16 m_7,u16 m_8)
+{
+	u8 _cnt=0;
+	ATKPack_t p;
+	
+	p.funcID = UP_MOTOR;
+	
+	p.data[_cnt++]=BYTE1(m_1);
+	p.data[_cnt++]=BYTE0(m_1);
+	p.data[_cnt++]=BYTE1(m_2);
+	p.data[_cnt++]=BYTE0(m_2);
+	p.data[_cnt++]=BYTE1(m_3);
+	p.data[_cnt++]=BYTE0(m_3);
+	p.data[_cnt++]=BYTE1(m_4);
+	p.data[_cnt++]=BYTE0(m_4);
+	p.data[_cnt++]=BYTE1(m_5);
+	p.data[_cnt++]=BYTE0(m_5);
+	p.data[_cnt++]=BYTE1(m_6);
+	p.data[_cnt++]=BYTE0(m_6);
+	p.data[_cnt++]=BYTE1(m_7);
+	p.data[_cnt++]=BYTE0(m_7);
+	p.data[_cnt++]=BYTE1(m_8);
+	p.data[_cnt++]=BYTE0(m_8);
+	
+	p.dataLen = _cnt;
+	ATKPackage_SendBuffer(p);
+}
+
 //数据周期上报给上位机，每1ms报一次
 void ATKPackage_SendPeriod(void)
 {
@@ -290,13 +319,13 @@ void ATKPackage_SendPeriod(void)
 	if(!(count_ms % PERIOD_MOTOR))
 	{
 		u16 m1,m2,m3,m4;
-	//	motorPWM_t motorPWM;
-	//	getMotorPWM(&motorPWM);
-	//	m1 = (float)motorPWM.m1/65535*1000;
-	//	m2 = (float)motorPWM.m2/65535*1000;
-	//	m3 = (float)motorPWM.m3/65535*1000;
-	//	m4 = (float)motorPWM.m4/65535*1000;
-	//	sendMotorPWM(m1,m2,m3,m4,0,0,0,0);
+		motorPWM_t motorPWM;
+		getMotorPWM(&motorPWM);
+		m1 = (float)motorPWM.m1/65535*1000;
+		m2 = (float)motorPWM.m2/65535*1000;
+		m3 = (float)motorPWM.m3/65535*1000;
+		m4 = (float)motorPWM.m4/65535*1000;
+  	sendMotorPWM(m1,m2,m3,m4,0,0,0,0);
 	}
 	if(!(count_ms % PERIOD_SENSOR2))
 	{

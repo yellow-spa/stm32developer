@@ -8,7 +8,7 @@ bool MPU6050_Initialize(void)
 {
 	  bool Status;
 	  MPU6050_DeviceReset(ENABLE);
-	  systick_ms(500);
+	  systick_ms(50);
 	  Status = MPU6050_TestConnection();
 	  if(!Status)
 		{
